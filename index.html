@@ -73,7 +73,7 @@
             position: absolute;
             right: -1.3vw; top: 0;
             width: 94%;
-            height: 47vw; /* نسبة من العرض بدل px */
+            height: 120vw; /* نسبة من العرض بدل px */
             background: url('lace_bg.png') no-repeat right top;
             background-size: contain;
             z-index: 1;
@@ -85,7 +85,7 @@
             right: 0;
             top: 2vw;
             /* عرض نسبي: تقريباً نفس الشاشة ناقص هامش يسار */
-            width: calc(100% - 9vw);
+            width: calc(90% - 9vw);
             height: auto;
             /* ارتفاع أقصى نسبي */
             max-height: 50dvh;
@@ -99,7 +99,7 @@
             position: absolute;
             right: 4vw;
             /* موقع عمودي نسبي */
-            top: 26dvh;
+            top: 32dvh;
             font-family: 'f2';
             color: var(--burgundy);
             font-weight: bold;
@@ -137,16 +137,15 @@
         .env-label {
             color: var(--cream);
             font-family: 'f2';
-            font-size: clamp(0.7rem, 3vw, 0.9rem);
+            font-size: clamp(0.85rem, 3.5vw, 1.15rem);
             margin-top: 1.5vw;
             display: block;
         }
-
-        /* القصيدة + وردة */
+   /* القصيدة + وردة */
         .poetry-area {
             position: absolute;
             left: 0;
-            bottom: 20dvh;
+            bottom: 14dvh;
             z-index: 10;
             text-align: center;
             width: clamp(160px, 46vw, 210px);
@@ -154,9 +153,9 @@
         .poetry-text {
             font-family: 'f3';
             color: var(--cream);
-            font-size: clamp(0.72rem, 2.8vw, 1.05rem);
-            line-height: 2.1;
-            margin-bottom: 2vw;
+            font-size: clamp(0.77rem, 3vw, 1.15rem);
+            line-height: 2.2;
+            margin-bottom: 1.5vw;
         }
         .lily-btn {
             width: clamp(60px, 19vw, 84px);
@@ -217,15 +216,14 @@
             position: relative;
         }
 
-        /* الستامب - نسبي */
-        .stamp-img {
-            position: absolute;
-            top: 38dvh;
-            right: 4.5vw;
-            width: clamp(44px, 13vw, 62px);
-            height: auto;
-            z-index: 10;
-        }
+       .stamp-img {
+    position: absolute;
+    top: 42dvh;     /* زدنا الرقم عشان ينزل الستامب للمربع تبعه تحت */
+    right: 4vw;     /* وزنا اليمين شوي عشان يدخل يدخل جوا المربع تماماً */
+    width: clamp(44px, 13vw, 62px);
+    height: auto;
+    z-index: 10;
+}
 
         /* زر العودة */
         .letter-back {
@@ -244,7 +242,7 @@
         /* عنوان الرسالة */
         .letter-title {
             position: absolute;
-            top: 49dvh;
+            top: 44dvh;
             right: 20%;
             font-family: 'f3';
             font-size: clamp(0.85rem, 3.5vw, 1.1rem);
@@ -255,7 +253,7 @@
         /* جسم الرسالة - typewriter */
         .letter-body {
             position: absolute;
-            top: 56dvh;
+            top: 49dvh;
             left: 12%;
             right: 12%;
             text-align: center;
@@ -265,6 +263,8 @@
             color: var(--burgundy);
             max-height: 28dvh;
             overflow: hidden;
+            direction: rtl;
+            unicode-bidi: bidi-override;
         }
         .typewriter-cursor {
             display: inline-block;
