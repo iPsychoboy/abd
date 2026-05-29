@@ -1,0 +1,565 @@
+uuuuu<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>اتمنى تسامحيني</title>
+    <style>
+        @font-face { font-family: 'f2'; src: url('font2.ttf'); }
+        @font-face { font-family: 'f3'; src: url('font3.otf'); }
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+
+        :root {
+            --burgundy: #3d0007;
+            --cream: #f5f1e6;
+            --gold: #c9a84c;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background-color: var(--burgundy);
+            font-family: 'f3', 'Amiri', serif;
+        }
+
+        /* ===== البتلات ===== */
+        #petals-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            top: -60px;
+            background: url('petal.png') no-repeat center / contain;
+            animation: petalFall linear infinite;
+            opacity: 0.9;
+        }
+        @keyframes petalFall {
+            0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.9; }
+            80%  { opacity: 0.6; }
+            100% { transform: translateY(115vh) rotate(700deg) scale(0.6); opacity: 0; }
+        }
+
+        /* ===== حوار أبل (مشترك) ===== */
+        .apple-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+        .apple-dialog {
+            background: rgba(242,242,247,0.97);
+            border-radius: 14px;
+            width: 74%;
+            max-width: 300px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+            animation: dialogPop 0.32s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes dialogPop {
+            from { transform: scale(0.7); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+        .apple-dialog-body {
+            padding: 20px 16px 14px;
+            text-align: center;
+        }
+        .apple-dialog-title {
+            font-family: 'f3', 'Amiri', serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1c1c1e;
+            margin-bottom: 4px;
+        }
+        .apple-dialog-divider { height: 0.5px; background: rgba(60,60,67,0.29); }
+        .apple-dialog-btns { display: flex; }
+        .apple-dialog-btns button {
+            flex: 1;
+            padding: 13px 0;
+            border: none;
+            background: transparent;
+            font-family: 'f3', 'Amiri', serif;
+            font-size: 1.05rem;
+            cursor: pointer;
+            color: #007aff;
+            transition: background 0.12s;
+        }
+        .apple-dialog-btns button:first-child {
+            border-left: 0.5px solid rgba(60,60,67,0.29);
+        }
+        .apple-dialog-btns button:active { background: rgba(0,0,0,0.07); }
+
+        /* ===== الواجهة الرئيسية ===== */
+        #mainUI {
+            position: relative;
+            width: 100%; height: 100%;
+            overflow: hidden;
+        }
+
+        /* الدانتيل */
+        .lace-area {
+            position: absolute;
+            right: 0; top: 0;
+            width: 100%; height: 300px;
+            background: url('lace_bg.png') no-repeat right top;
+            background-size: contain;
+            z-index: 1;
+        }
+
+        /* الجيف: من اليمين وينتهي قبل اليسار بشوي */
+        .lady-gif {
+            position: absolute;
+            right: 0; top: 0;
+            width: calc(100% - 38px);
+            height: auto;
+            max-height: 52vh;
+            object-fit: cover;
+            object-position: right top;
+            z-index: 2;
+        }
+
+        /* النص أسفل الجيف */
+        .gif-text {
+            position: absolute;
+            right: 12px;
+            top: 48vh;
+            font-family: 'f3', 'Amiri', serif;
+            color: var(--cream);
+            font-size: 0.95rem;
+            z-index: 3;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+        }
+
+        /* الظرف - يسار وسط */
+        .env-box {
+            position: absolute;
+            left: 18px;
+            top: 37vh;
+            text-align: center;
+            z-index: 10;
+            cursor: pointer;
+        }
+        .envelope-img {
+            width: 110px;
+            cursor: pointer;
+            animation: envFloat 3s ease-in-out infinite;
+            transition: transform 0.2s;
+        }
+        @keyframes envFloat {
+            0%,100% { transform: translateY(0); }
+            50%     { transform: translateY(-9px); }
+        }
+        .envelope-img:active { transform: scale(0.94); }
+        .env-label {
+            color: var(--cream);
+            font-family: 'f3','Amiri',serif;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        /* القصيدة + وردة - أسفل يسار */
+        .poetry-area {
+            position: absolute;
+            left: 8px;
+            bottom: 13vh;
+            z-index: 10;
+            text-align: center;
+            width: 205px;
+        }
+        .poetry-text {
+            font-family: 'f3', 'Amiri', serif;
+            color: var(--cream);
+            font-size: 0.95rem;
+            line-height: 2;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+        }
+        .lily-btn {
+            width: 78px;
+            height: auto;
+            cursor: pointer;
+            animation: lilyPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes lilyPulse {
+            0%,100% { transform: scale(1); }
+            50%     { transform: scale(1.12); }
+        }
+        .lily-label {
+            color: var(--cream);
+            font-family: 'f2', serif;
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* السيدة الجانبية - أسفل يمين */
+        .side-lady {
+            position: absolute;
+            right: 0; bottom: 0;
+            width: 195px;
+            height: auto;
+            z-index: 3;
+        }
+
+        /* ===== حوار وردة الليلي (عادي تبوسني؟) ===== */
+        #lilyDialog { display: none; }
+
+        /* ===== البوست كارد ===== */
+        .letter-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none;
+            background: rgba(0,0,0,0.92);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        /* البطاقة: مقسّمة مثل الصورة - صورة علوية + قسم رسالة */
+        .postcard {
+            width: 92%;
+            max-width: 400px;
+            max-height: 88vh;
+            background: var(--cream);
+            border-radius: 6px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+            animation: cardReveal 0.45s cubic-bezier(0.34,1.3,0.64,1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes cardReveal {
+            from { transform: scale(0.82) rotateY(12deg); opacity: 0; }
+            to   { transform: scale(1)    rotateY(0deg);  opacity: 1; }
+        }
+
+        /* الصورة العلوية في البوست كارد */
+        .postcard-top-img {
+            width: 100%;
+            height: 36%;
+            object-fit: cover;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        /* القسم السفلي (الرسالة) */
+        .postcard-bottom {
+            flex: 1;
+            background: #f9f5e8;
+            position: relative;
+            padding: 10px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* صف العنوان: "الى مرمورتي" + POST CARD + الستامب */
+        .postcard-title-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .to-label {
+            font-family: 'f3','Amiri',serif;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: var(--burgundy);
+            line-height: 1.3;
+        }
+        .postcard-mid-logo {
+            font-family: serif;
+            font-size: 0.72rem;
+            color: #888;
+            text-align: center;
+            letter-spacing: 1px;
+            line-height: 1.5;
+            padding-top: 2px;
+        }
+        .stamp-img {
+            width: 58px;
+            height: 58px;
+            object-fit: cover;
+            border: 2.5px solid var(--gold);
+            border-radius: 3px;
+            box-shadow: 1px 1px 5px rgba(0,0,0,0.25);
+            flex-shrink: 0;
+        }
+
+        /* خط فاصل ذهبي */
+        .postcard-line {
+            height: 0.5px;
+            background: linear-gradient(to left, transparent, var(--gold), transparent);
+            margin-bottom: 8px;
+        }
+
+        /* السلام عليكم */
+        .letter-greeting {
+            font-family: 'f3','Amiri',serif;
+            font-size: 0.82rem;
+            color: var(--burgundy);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        /* جسم الرسالة */
+        .letter-body {
+            font-family: 'f3','Amiri',serif;
+            font-size: 0.78rem;
+            line-height: 1.85;
+            color: #2a0005;
+            text-align: right;
+            overflow: hidden;
+            flex: 1;
+        }
+        .typewriter-cursor {
+            display: inline-block;
+            width: 1.5px;
+            height: 0.95em;
+            background: var(--burgundy);
+            margin-right: 1px;
+            animation: blink 0.65s infinite;
+            vertical-align: text-bottom;
+        }
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50%     { opacity: 0; }
+        }
+
+        /* زر العودة - أسفل البوست كارد في المنتصف */
+        .letter-back {
+            text-align: center;
+            font-family: 'f2', serif;
+            font-size: 0.82rem;
+            color: #888;
+            cursor: pointer;
+            padding-top: 8px;
+            flex-shrink: 0;
+        }
+        .letter-back:active { opacity: 0.6; }
+
+    </style>
+</head>
+<body>
+
+<!-- ===== حوار "تحبني؟" - أول ما يفتح الموقع ===== -->
+<div class="apple-overlay" id="welcomeDialog">
+    <div class="apple-dialog">
+        <div class="apple-dialog-body">
+            <div class="apple-dialog-title">تحبني ؟</div>
+        </div>
+        <div class="apple-dialog-divider"></div>
+        <div class="apple-dialog-btns">
+            <button onclick="startExperience()">ايي</button>
+            <button onclick="startExperience()">ايي</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== حوار "عادي تبوسني؟" - عند ضغط وردة الليلي ===== -->
+<div class="apple-overlay" id="lilyDialog">
+    <div class="apple-dialog">
+        <div class="apple-dialog-body">
+            <div class="apple-dialog-title">عادي تبوسني ؟</div>
+        </div>
+        <div class="apple-dialog-divider"></div>
+        <div class="apple-dialog-btns">
+            <!-- ============================================================ -->
+            <!-- رابط الإنستا: غيّر YOUR_INSTAGRAM_USERNAME باسم حسابك       -->
+            <!-- ============================================================ -->
+            <button onclick="openLink('https://www.instagram.com/zkl_872')">محروم</button>
+            <!-- ============================================================ -->
+            <!-- رابط السناب: غيّر YOUR_SNAPCHAT_USERNAME باسم حسابك         -->
+            <!-- ============================================================ -->
+            <button onclick="openLink('https://snapchat.com/add/zkl_80')">اموح</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== البتلات ===== -->
+<div id="petals-container"></div>
+
+<!-- ===== الواجهة الرئيسية ===== -->
+<div id="mainUI">
+    <div class="lace-area"></div>
+
+    <img src="lady_animated.gif" class="lady-gif" alt="">
+
+    <div class="gif-text">زعلت الدنيا بزعلك</div>
+
+    <img src="lady_roses.png" class="side-lady" alt="">
+
+    <!-- الظرف -->
+    <div class="env-box" onclick="showLetter()">
+        <img src="envelope_icon.png" class="envelope-img" alt="ظرف">
+        <div class="env-label">افتحي الظرف ريمو</div>
+    </div>
+
+    <!-- القصيدة + وردة الليلي -->
+    <div class="poetry-area">
+        <div class="poetry-text">
+            لَكَ حَقٌّ تَزْعَلُ ثُمَّ لَكَ حَقٌّ نُرضِيكَ<br>
+            مَا أَقْوَى زَعَلْ حَبِيبِ قَلْبِي وَعَيْنِي<br>
+            مَا دَامَ قَلْبِي يَا أَرِيشَ العَيْنِ مُغْلِيكَ<br>
+            اِطْلُبْ وَلَكَ رُوحِي وَمَا فِي يَدَيْنِي<br>
+            لَا تَنْشَغِلْ مَالَكَ وَزَيْنٌ يُضَاهِيكَ<br>
+            أَبِيكَ أَنَا لَوْ كَانَ غَيْرُكَ يَبِينِي
+        </div>
+        <img src="white_lily.png" class="lily-btn" onclick="showLilyDialog()" alt="وردة">
+        <span class="lily-label">اضغطي الورده بعد الظرف</span>
+    </div>
+</div>
+
+<!-- ===== البوست كارد ===== -->
+<div class="letter-overlay" id="letterUI">
+    <div class="postcard">
+
+        <!-- الصورة العلوية للبوست كارد -->
+        <!-- ================================================= -->
+        <!-- غيّر postcard_top.png بصورة حقولك أو أي صورة      -->
+        <!-- ================================================= -->
+        <img src="postcard_top.png" class="postcard-top-img" alt="">
+
+        <!-- القسم السفلي -->
+        <div class="postcard-bottom">
+
+            <!-- صف: الى مرمورتي + POST CARD + الستامب -->
+            <div class="postcard-title-row">
+                <div class="to-label">الى مرمورتي</div>
+                <div class="postcard-mid-logo">POST<br>CARD</div>
+                <!-- ============================================= -->
+                <!-- غيّر stamp.png بصورتك للستامب                 -->
+                <!-- ============================================= -->
+                <img src="stamp.png" class="stamp-img" alt="ستامب">
+            </div>
+
+            <!-- خط فاصل -->
+            <div class="postcard-line"></div>
+
+            <!-- السلام عليكم -->
+            <div class="letter-greeting">السلام عليكم ورحمة الله وبركاته</div>
+
+            <!-- جسم الرسالة (typewriter) -->
+            <div class="letter-body" id="letterBody"></div>
+
+            <!-- زر العودة في الأسفل -->
+            <div class="letter-back" onclick="hideLetter()">عودة ↩</div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===== الموسيقى ===== -->
+<!-- ============================================================ -->
+<!-- الموسيقى الرئيسية (الخلفية): غيّر celebration_music.mp3    -->
+<!-- ============================================================ -->
+<audio id="bgMusic" src="celebration_music.mp3" loop></audio>
+
+<!-- ============================================================ -->
+<!-- موسيقى الرسالة (الظرف): غيّر letter_music.mp3              -->
+<!-- ============================================================ -->
+<audio id="letterMusic" src="letter_music.mp3" loop></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+
+    /* ===== نص الرسالة ===== */
+    const letterText = `اليوم اول ايام العيد وثالث ايام العيد لنا مع بعض ، كل عام وانتي بخير وكل عام وانتي عيدي ، اعتذر اني غلطت الاشهر اللي فاتت كثير وتعبتك كثير واسلوبي كان سيء معك مع انك ماسويتيلي شي ، ومابقدر اوفيك حقك او اعوضك معي لكن بحاول بكل يوم اكون شخص افضل وشخص يستحق وحده مثلك ، انا احبك وفي كل يوم يزداد حبي لك مع اني سبك وما اعرف اظهر هالحب لكن سويت ذا الموقع البسيط عشانك ، احبك .`;
+
+    /* ===== البتلات ===== */
+    function createPetals() {
+        const container = document.getElementById('petals-container');
+        for (let i = 0; i < 40; i++) {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            const size = 14 + Math.random() * 22;
+            p.style.width  = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = (Math.random() * 105) + '%';
+            const dur = 5 + Math.random() * 9;
+            const del = Math.random() * 12;
+            p.style.animationDuration = dur + 's';
+            p.style.animationDelay   = del + 's';
+            p.style.transform = 'rotate(' + Math.floor(Math.random()*360) + 'deg)';
+            container.appendChild(p);
+        }
+    }
+
+    /* ===== بدء التجربة بعد "تحبني؟" ===== */
+    function startExperience() {
+        document.getElementById('welcomeDialog').style.display = 'none';
+        document.getElementById('bgMusic').play().catch(() => {});
+        createPetals();
+    }
+
+    /* ===== وردة الليلي: حوار "عادي تبوسني؟" ===== */
+    function showLilyDialog() {
+        document.getElementById('lilyDialog').style.display = 'flex';
+    }
+
+    function openLink(url) {
+        document.getElementById('lilyDialog').style.display = 'none';
+        window.open(url, '_blank');
+    }
+
+    /* ===== الظرف: فتح البوست كارد ===== */
+    function showLetter() {
+        document.getElementById('bgMusic').pause();
+        document.getElementById('letterUI').style.display = 'flex';
+        document.getElementById('letterMusic').play().catch(() => {});
+        confetti({ particleCount: 70, spread: 55, origin: { y: 0.35 }, colors: ['#c9a84c','#f5f1e6','#ff8fab'] });
+        typewriterEffect();
+    }
+
+    function hideLetter() {
+        document.getElementById('letterUI').style.display = 'none';
+        document.getElementById('letterMusic').pause();
+        document.getElementById('letterMusic').currentTime = 0;
+        document.getElementById('bgMusic').play().catch(() => {});
+        // أعد تهيئة نص الرسالة
+        document.getElementById('letterBody').innerHTML = '';
+    }
+
+    /* ===== تأثير الكتابة حرف بحرف ===== */
+    function typewriterEffect() {
+        const el = document.getElementById('letterBody');
+        el.innerHTML = '<span class="typewriter-cursor"></span>';
+        let i = 0;
+        const speed = 25;
+
+        function type() {
+            if (i < letterText.length) {
+                const cursor = el.querySelector('.typewriter-cursor');
+                const char = letterText[i];
+                if (char === '\n') {
+                    cursor.insertAdjacentHTML('beforebegin', '<br>');
+                } else {
+                    cursor.insertAdjacentText('beforebegin', char);
+                }
+                i++;
+                setTimeout(type, speed);
+            } else {
+                const cursor = el.querySelector('.typewriter-cursor');
+                if (cursor) cursor.remove();
+            }
+        }
+        type();
+    }
+
+</script>
+</body>
+</html>
